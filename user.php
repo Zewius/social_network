@@ -6,7 +6,7 @@ $username = $_GET['username'] ?? $_SESSION['username'];
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=bib', 'root', '');
 
-    $stmt = $pdo->prepare('SELECT username, email, first_name, last_name, role FROM users WHERE username = :username');
+    $stmt = $pdo->prepare('SELECT username, email, first_name, last_name, registration_date, role FROM users WHERE username = :username');
     $stmt->execute(['username' => $username]);
 
     $user = $stmt->fetch();
@@ -62,18 +62,19 @@ try {
                             <p class="display-4 text-center">
                                 <?php echo $user['first_name'] . " " . $user['last_name'] ?>
                             </p>
-
                             <?php if ($user['role'] == 'admin') { ?>
                                 <div class="text-center">
                                 <span class="badge bg-success text-center"
                                       title="Данный пользователь является администратором">Admin</span>
                                 </div>
                             <?php } ?>
-
                             <p class="h3 text-center mt-3">
                                 <?php echo "Email: " . $user['email'] ?>
                             </p>
-                        <?php } else {?>
+                            <p class="h3 text-center mt-3">
+                                <?php echo "Дата регистрации: " . $user['registration_date'] ?>
+                            </p>
+                        <?php } else { ?>
                             <p class="display-4 text-center"> Пользователь не найден </p>
                         <?php } ?>
                     </div>
