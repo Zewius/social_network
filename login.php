@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: login.php?error=forbidden');
         }
     } catch (PDOException) {
-        header("location: login.php?error=internal_server_error");
+        header("Location: login.php?error=internal_server_error");
     }
 }
 ?>
@@ -65,16 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="submit" value="Авторизоваться" class="btn btn-primary">
                             </div>
                         </form>
+
                         <?php if (isset($_GET['error']) && $_GET['error'] == 'internal_server_error') { ?>
                             <div class="alert alert-danger text-center">
                                 Внутренняя ошибка сервера, повторите попытку позже!
                             </div>
                         <?php } ?>
                         <?php if (isset($_GET['error']) && $_GET['error'] == 'forbidden') { ?>
-                            <div class="alert alert-danger text-center"> Неверный логин или пароль! </div>
+                            <div class="alert alert-danger text-center"> Неверный логин или пароль!</div>
                         <?php } ?>
+
                         <div class="text-center">
-                            <a href="register.php" class="text-center"> Нет учётной записи? Зарегистрироваться! </a>
+                            <a href="register.php"> Нет учётной записи? Зарегистрироваться! </a>
                         </div>
                     </div>
                 </div>
