@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_POST['confirm']) || $_POST['password'] != $_POST['confirm']) {
         $_SESSION['invalid_confirm'] = "Значение данного поля не совпадает с полем для ввода пароля";
     }
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
 
     $registration_date = date('Y-m-d H:i:s');
     $role = 'user';
