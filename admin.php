@@ -1,7 +1,7 @@
 <?php
 include 'session.php';
 
-$username = $_GET['username'] ?? $_SESSION['username'];
+$username = $_SESSION['username'];
 
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=bib', 'root', '');
@@ -10,6 +10,16 @@ try {
     $stmt->execute(['username' => $username]);
 
     $user = $stmt->fetch();
+
+    if ($user['role'] == 'admin') {
+        $stmt = $pdo->prepare('SELECT username, role FROM users');
+        $stmt->execute();
+
+        $users = $stmt->fetchAll();
+    } else {
+        // Доступ запрещён
+        header('Location: user.php?error=forbidden');
+    }
 } catch (PDOException) {
     header('location: login.php?error=internal_server_error');
 }
@@ -24,7 +34,7 @@ try {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <title> Страница пользователя </title>
+    <title>Админка</title>
 </head>
 
 <body>
@@ -57,31 +67,33 @@ try {
         <div class="d-flex align-items-center" style="height: 100vh;">
             <div class="row mx-auto">
                 <div class="col">
-                    <div class="card-header">
-                        <?php if (isset($user) && $user) { ?>
-                            <p class="display-4 text-center">
-                                <?php echo $user['first_name'] . " " . $user['last_name'] ?>
-                            </p>
-                            <?php if ($user['role'] == 'admin') { ?>
-                                <div class="text-center">
-                                <span class="badge bg-success text-center"
-                                      title="Данный пользователь является администратором">Admin</span>
-                                </div>
-                            <?php } ?>
-                            <p class="h3 text-center mt-3">
-                                <?php echo "Email: " . $user['email'] ?>
-                            </p>
-                            <p class="h3 text-center mt-3">
-                                <?php echo "Дата регистрации: " . $user['registration_date'] ?>
-                            </p>
-                        <?php } else { ?>
-                            <p class="display-4 text-center"> Пользователь не найден </p>
-                        <?php } ?>
-                    </div>
-                    <?php if (isset($_GET['error']) && $_GET['error'] == 'forbidden') { ?>
-                        <div class="alert alert-danger text-center"> У вас нет прав </div>
+                    <p class="display-4 text-center"> Список пользователей </p>
+                    <?php if (isset($users) && $users) { ?>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Имя пользователя</th>
+                                <th>Роль</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($users as $user) {
+                                echo "<tr>";
+                                echo "<td>".$user['username']."</td>";
+                                echo "<td>".$user['role']."</td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    <?php } else { ?>
+                        <p class="text-center"> Список пуст </p>
                     <?php } ?>
                 </div>
+                <?php if (isset($_GET['error']) && $_GET['error'] == 'forbidden') { ?>
+                    <div class="alert alert-danger text-center"> У вас нет прав</div>
+                <?php } ?>
             </div>
         </div>
     </div>
