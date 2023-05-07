@@ -70,6 +70,7 @@ try {
                     <p class="display-4 text-center"> Список пользователей </p>
                     <?php if (isset($users) && $users) { ?>
                         <table class="table">
+                            <caption>Таблица пользователей и их роль</caption>
                             <thead>
                             <tr>
                                 <th>Имя пользователя</th>
