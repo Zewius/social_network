@@ -66,6 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </form>
 
+                        <?php if (isset($_GET['message']) && $_GET['message'] == 'account_deleted') { ?>
+                            <div class="alert alert-primary text-center">
+                                Аккаунт был удалён!
+                            </div>
+                        <?php } ?>
                         <?php if (isset($_GET['error']) && $_GET['error'] == 'internal_server_error') { ?>
                             <div class="alert alert-danger text-center">
                                 Внутренняя ошибка сервера, повторите попытку позже!
