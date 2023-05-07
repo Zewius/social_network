@@ -84,10 +84,12 @@ if (isset($_GET['to'])) {
         <div class="d-flex align-items-center" style="height: 100vh;">
             <div class="row mx-auto">
                 <div class="col">
+                    <p class="display-4 text-center"> Личные сообщения с
+                        пользователем <?php echo $user_to['username'] ?> </p>
                     <?php if (isset($messages)) {
                         foreach ($messages as $message) {
                             echo "<div class='message'>";
-                            echo "<p>".$message['username'].": ".$message['message']."</p>";
+                            echo "<p>" . $message['username'] . ": " . $message['message'] . "</p>";
                             echo "</div>";
                         }
                     }
