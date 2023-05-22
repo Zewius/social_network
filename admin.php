@@ -48,7 +48,7 @@ try {
                     <a class="nav-link active" aria-current="page" href="user.php"> Личная страница</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#"> Сообщения </a>
+                    <a class="nav-link active" aria-current="page" href="user_list.php"> Список пользователей </a>
                 </li>
             </ul>
         </div>
